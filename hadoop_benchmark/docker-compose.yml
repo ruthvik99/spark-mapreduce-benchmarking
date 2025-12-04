@@ -1,0 +1,73 @@
+version: "3"
+services:
+  namenode:
+    platform: linux/amd64
+    build:
+      context: .
+      args:
+        SERVICE_NAME: namenode
+    container_name: namenode
+    hostname: namenode
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    env_file:
+      - ./hadoop.env
+    environment:
+      - CLUSTER_NAME=test
+      # -Xint (Safe Mode) prevents JIT crashes on Apple Silicon
+      # -XX:+UseSerialGC uses a simpler garbage collector
+      - JAVA_TOOL_OPTIONS=-XX:-UseCompressedOops -XX:-UseCompressedClassPointers -Xint -XX:+UseSerialGC
+    volumes:
+      - ./:/code
+
+  datanode:
+    platform: linux/amd64
+    build:
+      context: .
+      args:
+        SERVICE_NAME: datanode
+    container_name: datanode
+    hostname: datanode
+    env_file:
+      - ./hadoop.env
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+      - JAVA_TOOL_OPTIONS=-XX:-UseCompressedOops -XX:-UseCompressedClassPointers -Xint -XX:+UseSerialGC
+    volumes:
+      - ./:/code
+
+  resourcemanager:
+    platform: linux/amd64
+    build:
+      context: .
+      args:
+        SERVICE_NAME: resourcemanager
+    container_name: resourcemanager
+    hostname: resourcemanager
+    ports:
+      - "8088:8088"
+    env_file:
+      - ./hadoop.env
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+      - JAVA_TOOL_OPTIONS=-XX:-UseCompressedOops -XX:-UseCompressedClassPointers -Xint -XX:+UseSerialGC
+    volumes:
+      - ./:/code
+
+  nodemanager:
+    platform: linux/amd64
+    build:
+      context: .
+      args:
+        SERVICE_NAME: nodemanager
+    container_name: nodemanager
+    hostname: nodemanager
+    env_file:
+      - ./hadoop.env
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+      - SERVICE_PRECONDITION=resourcemanager:8088
+      - JAVA_TOOL_OPTIONS=-XX:-UseCompressedOops -XX:-UseCompressedClassPointers -Xint -XX:+UseSerialGC
+    volumes:
+      - ./:/code

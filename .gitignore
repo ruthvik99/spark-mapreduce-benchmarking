@@ -1,0 +1,10 @@
+spark-env/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+datasets
+.datasets_cache/
+logs/
+hadoop_benchmark/amazon_data
+hadoop_benchmark/iris.csv
+hadoop_benchmark/SUSY.csv
