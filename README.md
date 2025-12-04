@@ -34,6 +34,25 @@ Implemented using Hadoop Streaming:
 
 ## 3. How to Run
 
+Important:
+Due to very large file sizes (SUSY: 5M rows, Amazon Reviews: 12M+ rows), the actual dataset files are not included in this repository.
+Only the folder structure is provided.
+
+1. Iris Dataset (150 rows)
+
+Source: UCI Machine Learning Repository
+    Download: https://archive.ics.uci.edu/ml/datasets/iris
+
+2. SUSY Dataset (5,000,000 rows)
+
+Source: UCI Machine Learning Repository
+    Download: https://archive.ics.uci.edu/ml/datasets/SUSY
+
+3. Amazon Reviews Dataset (~12 million records)
+
+Source: Amazon Customer Reviews Dataset (Kaggle)
+    Download: https://www.kaggle.com/datasets/cynthiarempel/amazon-us-customer-reviews-dataset/data    
+
 ### A) Run PySpark Benchmarks (Notebooks)
 
 The PySpark benchmarks are provided as Jupyter Notebooks:
@@ -172,7 +191,7 @@ This enables Python-based Hadoop Streaming jobs.
 ```
 SPARK-BENCHMARKING/
 │
-├── datasets/
+├── datasets/           # place all .tsv and .csv files here
 │   ├── iris.csv
 │   ├── SUSY.csv
 │   └── amazon_data/
